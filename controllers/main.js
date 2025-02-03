@@ -18,6 +18,14 @@ async function login(req, res) {
 }
 
 async function dashboard(req, res) {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    throw new CustomAPIError("You must be logged in", 401);
+  }
+
+  const token = authHeader.split(" ")[1];
+
   const luckyNumber = Math.floor(Math.random() * 100);
   res
     .status(200)
